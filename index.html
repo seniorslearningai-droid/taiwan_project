@@ -1742,8 +1742,10 @@
   function _loadZhVoice() {
     var v = window.speechSynthesis.getVoices();
     _zhVoice = v.find(function(x){ return x.lang === ‘zh-TW’; }) ||
+               v.find(function(x){ return x.lang === ‘zh-CN’; }) ||
                v.find(function(x){ return x.lang === ‘zh-HK’; }) ||
                v.find(function(x){ return x.lang.startsWith(‘zh’); }) || null;
+    console.log(‘Taiwan app: voice loaded =’, _zhVoice ? _zhVoice.name + ‘ (‘ + _zhVoice.lang + ‘)’ : ‘none found’);
   }
   if (window.speechSynthesis) {
     _loadZhVoice();
@@ -1751,20 +1753,17 @@
   }
 
   function speakPhrase(text, btn) {
+    console.log(‘speakPhrase called:’, text);
     if (!window.speechSynthesis) {
       alert(‘Sorry — your browser does not support audio. Try Chrome or Edge.’);
       return;
     }
     var u = new SpeechSynthesisUtterance(text);
-    u.lang = ‘zh-TW’;
+    u.lang = _zhVoice ? _zhVoice.lang : ‘zh-CN’;
     u.rate = 0.85;
     if (_zhVoice) u.voice = _zhVoice;
-    if (btn) {
-      var orig = btn.textContent;
-      btn.textContent = ‘🔊’;
-      u.onend   = function() { btn.textContent = orig; };
-      u.onerror = function() { btn.textContent = orig; };
-    }
+    console.log(‘Speaking with voice:’, _zhVoice ? _zhVoice.name : ‘browser default’, ‘/ lang:’, u.lang);
+    u.onerror = function(e) { console.log(‘Speech error:’, e.error); };
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   }
