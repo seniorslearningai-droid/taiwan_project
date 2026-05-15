@@ -1737,22 +1737,35 @@
 
 <script>
   // Phrases data
+  // Pre-load the best available Chinese voice
+  var _zhVoice = null;
+  function _loadZhVoice() {
+    var v = window.speechSynthesis.getVoices();
+    _zhVoice = v.find(function(x){ return x.lang === ‘zh-TW’; }) ||
+               v.find(function(x){ return x.lang === ‘zh-HK’; }) ||
+               v.find(function(x){ return x.lang.startsWith(‘zh’); }) || null;
+  }
+  if (window.speechSynthesis) {
+    _loadZhVoice();
+    window.speechSynthesis.onvoiceschanged = _loadZhVoice;
+  }
+
   function speakPhrase(text, btn) {
     if (!window.speechSynthesis) {
       alert(‘Sorry — your browser does not support audio. Try Chrome or Edge.’);
       return;
     }
-    window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.lang = ‘zh-TW’;
     u.rate = 0.85;
-    u.pitch = 1;
+    if (_zhVoice) u.voice = _zhVoice;
     if (btn) {
       var orig = btn.textContent;
       btn.textContent = ‘🔊’;
       u.onend   = function() { btn.textContent = orig; };
       u.onerror = function() { btn.textContent = orig; };
     }
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   }
 
