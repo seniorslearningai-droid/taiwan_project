@@ -1738,48 +1738,22 @@
 <script>
   // Phrases data
   function speakPhrase(text, btn) {
-    speak(text, btn || null);
-  }
-
-  function speak(text, btn) {
-    if (!(‘speechSynthesis’ in window)) {
-      alert(‘Sorry, your browser doesn\’t support voice playback. Try Chrome, Edge, or Safari.’);
+    if (!window.speechSynthesis) {
+      alert(‘Sorry — your browser does not support audio. Try Chrome or Edge.’);
       return;
     }
-
-    const orig = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = ‘⏳’;
-
-    function doSpeak() {
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = ‘zh-TW’;
-      u.rate = 0.85;
-
-      // Pick the best available Chinese voice
-      const voices = speechSynthesis.getVoices();
-      const zhVoice =
-        voices.find(v => v.lang === ‘zh-TW’) ||
-        voices.find(v => v.lang === ‘zh-HK’) ||
-        voices.find(v => v.lang.startsWith(‘zh’)) ||
-        null;
-      if (zhVoice) u.voice = zhVoice;
-
-      u.onstart = () => { btn.textContent = ‘🔊’; };
-      u.onend   = () => { btn.textContent = orig; btn.disabled = false; };
-      u.onerror = () => { btn.textContent = orig; btn.disabled = false; };
-
-      speechSynthesis.speak(u);
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = ‘zh-TW’;
+    u.rate = 0.85;
+    u.pitch = 1;
+    if (btn) {
+      var orig = btn.textContent;
+      btn.textContent = ‘🔊’;
+      u.onend   = function() { btn.textContent = orig; };
+      u.onerror = function() { btn.textContent = orig; };
     }
-
-    // Voices may not be loaded yet — wait for them if needed
-    if (speechSynthesis.getVoices().length > 0) {
-      doSpeak();
-    } else {
-      speechSynthesis.addEventListener(‘voiceschanged’, doSpeak, { once: true });
-      setTimeout(doSpeak, 600); // fallback if voiceschanged never fires
-    }
+    window.speechSynthesis.speak(u);
   }
 
   // Splash screen dismiss
