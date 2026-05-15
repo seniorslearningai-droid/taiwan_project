@@ -1,0 +1,11 @@
+# Ignore unrelated project files
+*.tsv
+*.csv
+*.txt
+*.awk
+*.md
+*.pdf
+csimc*
+
+# Ignore local dev tools
+.claude/
