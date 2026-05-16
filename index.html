@@ -1736,18 +1736,22 @@
 </footer>
 
 <script>
-  // Wire up phrase buttons via addEventListener (more reliable than onclick)
+  // Wire up phrase buttons with pre-recorded audio files
+  var phraseAudioMap = {
+    ‘你好’:’nihao’,’謝謝’:’xiexie’,’不客氣’:’bukeqi’,’對不起’:’duibuqi’,
+    ‘請問’:’qingwen’,’好吃！’:’haochi’,’多少錢？’:’duoshaoquian’,
+    ‘廁所在哪裡？’:’cesuo’,’我聽不懂’:’tingbudong’,
+    ‘可以拍照嗎？’:’paizhao’,’再見’:’zaijian’,’我愛台灣！’:’woaitaiwan’
+  };
   document.querySelectorAll(‘#phraseList .phrase’).forEach(function(row) {
-    var chinese = row.querySelector(‘.chinese’).textContent.replace(/[！？]/g, ‘’);
+    var chinese = row.querySelector(‘.chinese’).textContent;
     var btn = row.querySelector(‘button’);
-    btn.addEventListener(‘click’, function() {
-      var url = ‘https://translate.googleapis.com/translate_tts?ie=UTF-8&q=’
-        + encodeURIComponent(chinese) + ‘&tl=zh-CN&client=tw-ob’;
-      var audio = new Audio();
-      audio.referrerPolicy = ‘no-referrer’;
-      audio.src = url;
-      audio.play();
-    });
+    var file = phraseAudioMap[chinese];
+    if (file) {
+      btn.addEventListener(‘click’, function() {
+        new Audio(‘audio/’ + file + ‘.wav’).play();
+      });
+    }
   });
 
   // Splash screen dismiss
