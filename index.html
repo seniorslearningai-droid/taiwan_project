@@ -1740,6 +1740,7 @@
   var _gtAudio = null;
 
   function speakPhrase(text, btn) {
+    console.log(‘speakPhrase called! text=’ + text + ‘ btn=’ + (btn ? btn.tagName : ‘null’));
     var orig = btn ? btn.textContent : ‘🔊’;
     if (btn) { btn.textContent = ‘⏳’; btn.disabled = true; }
 
