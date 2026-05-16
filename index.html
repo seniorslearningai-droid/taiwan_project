@@ -1743,7 +1743,9 @@
     btn.addEventListener(‘click’, function() {
       var url = ‘https://translate.googleapis.com/translate_tts?ie=UTF-8&q=’
         + encodeURIComponent(chinese) + ‘&tl=zh-CN&client=tw-ob’;
-      var audio = new Audio(url);
+      var audio = new Audio();
+      audio.referrerPolicy = ‘no-referrer’;
+      audio.src = url;
       audio.play();
     });
   });
