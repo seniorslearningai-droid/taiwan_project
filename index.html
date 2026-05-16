@@ -1737,35 +1737,30 @@
 
 <script>
   // Phrases data
-  // Pre-load the best available Chinese voice
-  var _zhVoice = null;
-  function _loadZhVoice() {
-    var v = window.speechSynthesis.getVoices();
-    _zhVoice = v.find(function(x){ return x.lang === ‘zh-TW’; }) ||
-               v.find(function(x){ return x.lang === ‘zh-CN’; }) ||
-               v.find(function(x){ return x.lang === ‘zh-HK’; }) ||
-               v.find(function(x){ return x.lang.startsWith(‘zh’); }) || null;
-    console.log(‘Taiwan app: voice loaded =’, _zhVoice ? _zhVoice.name + ‘ (‘ + _zhVoice.lang + ‘)’ : ‘none found’);
-  }
-  if (window.speechSynthesis) {
-    _loadZhVoice();
-    window.speechSynthesis.onvoiceschanged = _loadZhVoice;
-  }
-
   function speakPhrase(text, btn) {
-    console.log(‘speakPhrase called:’, text);
-    if (!window.speechSynthesis) {
-      alert(‘Sorry — your browser does not support audio. Try Chrome or Edge.’);
-      return;
-    }
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = _zhVoice ? _zhVoice.lang : ‘zh-CN’;
-    u.rate = 0.85;
-    if (_zhVoice) u.voice = _zhVoice;
-    console.log(‘Speaking with voice:’, _zhVoice ? _zhVoice.name : ‘browser default’, ‘/ lang:’, u.lang);
-    u.onerror = function(e) { console.log(‘Speech error:’, e.error); };
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    var orig = btn ? btn.textContent : ‘🔊’;
+    if (btn) { btn.textContent = ‘⏳’; btn.disabled = true; }
+
+    // Use Google Translate’s audio for reliable Chinese pronunciation
+    var url = ‘https://translate.googleapis.com/translate_tts?ie=UTF-8&q=’
+      + encodeURIComponent(text) + ‘&tl=zh-TW&client=gtx’;
+    var audio = new Audio(url);
+
+    audio.onplaying = function() { if (btn) btn.textContent = ‘🔊’; };
+    audio.onended   = function() { if (btn) { btn.textContent = orig; btn.disabled = false; } };
+    audio.onerror   = function() {
+      if (btn) { btn.textContent = orig; btn.disabled = false; }
+      // Fallback to browser TTS if Google audio fails
+      if (window.speechSynthesis) {
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = ‘zh-CN’;
+        window.speechSynthesis.speak(u);
+      }
+    };
+
+    audio.play().catch(function() {
+      if (btn) { btn.textContent = orig; btn.disabled = false; }
+    });
   }
 
   // Splash screen dismiss
