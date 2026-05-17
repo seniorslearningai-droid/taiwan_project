@@ -565,7 +565,7 @@
     box-shadow: 0 24px 60px rgba(31,45,61,.22);
     transform: translateY(0);
   }
-  .returning-card .q-emoji { font-size: 2.8rem; margin-bottom: .5rem; }
+  .returning-card .q-emoji { margin-bottom: .75rem; line-height: 1; }
   .returning-card h2 {
     font-family: 'Fredoka', sans-serif;
     font-size: 1.7rem;
@@ -660,7 +660,25 @@
 <!-- ========= RETURNING USER SCREEN ========= -->
 <div id="returningScreen" role="dialog" aria-modal="true" aria-label="Returning user question">
   <div class="returning-card">
-    <div class="q-emoji">🇹🇼</div>
+    <div class="q-emoji">
+      <svg viewBox="0 0 50 50" width="100" height="100" aria-label="Taiwan Blue Magpie" role="img">
+        <path d="M24 25 Q34 28 44 46 L47 44 Q40 26 26 21 Z" fill="#1f5fbf"/>
+        <ellipse cx="45.5" cy="45" rx="1.5" ry="1" fill="#fff"/>
+        <line x1="40" y1="38" x2="42" y2="38.5" stroke="#fff" stroke-width="0.7" stroke-linecap="round"/>
+        <ellipse cx="17" cy="21" rx="9" ry="5.5" transform="rotate(-12 17 21)" fill="#1f5fbf"/>
+        <path d="M11 17 Q19 13 24 20 Q22 26 15 26 Q9 24 11 17 Z" fill="#0e3e8c"/>
+        <circle cx="11" cy="11" r="5" fill="#1a1a1a"/>
+        <path d="M7 14 Q6 20 12 24 Q17 22 15 17 Q12 12 9 12 Z" fill="#1a1a1a"/>
+        <circle cx="10" cy="10" r="1.4" fill="#FFD93D"/>
+        <circle cx="10.3" cy="10.3" r="0.6" fill="#1a1a1a"/>
+        <circle cx="9.8" cy="9.5" r="0.35" fill="#fff"/>
+        <path d="M6 10.5 L0 11.7 L6 13 Z" fill="#E63946"/>
+        <line x1="14" y1="26" x2="14" y2="32" stroke="#E63946" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="19" y1="26" x2="19" y2="32" stroke="#E63946" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="12" y1="32" x2="16" y2="32" stroke="#E63946" stroke-width="1" stroke-linecap="round"/>
+        <line x1="17" y1="32" x2="21" y2="32" stroke="#E63946" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+    </div>
     <h2>Have you used this website before?</h2>
     <div class="returning-btns">
       <button class="btn-yes" id="btnYes">Yes ✅</button>
