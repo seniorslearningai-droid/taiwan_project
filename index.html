@@ -532,6 +532,68 @@
   .phrase button:active { transform: scale(0.95); }
   .phrase button:focus-visible { outline: 3px solid #ffd93d; outline-offset: 2px; }
 
+  /* ===== RETURNING USER SCREEN ===== */
+  #returningScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease;
+  }
+  #returningScreen.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+  #returningScreen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .returning-card {
+    background: var(--cream);
+    border-radius: 28px;
+    padding: 2.5rem 2rem 2rem;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(31,45,61,.22);
+    transform: translateY(0);
+  }
+  .returning-card .q-emoji { font-size: 2.8rem; margin-bottom: .5rem; }
+  .returning-card h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.7rem;
+    color: var(--ink);
+    margin: 0 0 1.5rem;
+    line-height: 1.2;
+  }
+  .returning-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .returning-btns button {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: .7rem 2rem;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+    box-shadow: 0 6px 18px rgba(31,45,61,.15);
+  }
+  .returning-btns button:hover  { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(31,45,61,.2); }
+  .returning-btns button:active { transform: translateY(1px); }
+  .btn-yes { background: linear-gradient(135deg,#2A9D8F,#1a7a6e); color: #fff; }
+  .btn-no  { background: linear-gradient(135deg,#E63946,#b52d39); color: #fff; }
+
   /* footer */
   footer {
     text-align: center;
@@ -592,7 +654,19 @@
 
   <div class="splash-title">Hello, Taiwan! 🇹🇼</div>
   <div class="splash-sub">Taiwan's national bird welcomes you!</div>
-  <button class="splash-btn" id="splashBtn" onclick="(function(){var s=document.getElementById('splash');if(s){s.classList.add('hidden');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);var t=document.getElementById('taipei');if(t)t.scrollIntoView({behavior:'smooth'});},700);}})()">Let's Explore ✨</button>
+  <button class="splash-btn" id="splashBtn" onclick="dismissSplash()">Let's Explore ✨</button>
+</div>
+
+<!-- ========= RETURNING USER SCREEN ========= -->
+<div id="returningScreen" role="dialog" aria-modal="true" aria-label="Returning user question">
+  <div class="returning-card">
+    <div class="q-emoji">🇹🇼</div>
+    <h2>Have you used this website before?</h2>
+    <div class="returning-btns">
+      <button class="btn-yes" id="btnYes">Yes ✅</button>
+      <button class="btn-no"  id="btnNo">No 🌟</button>
+    </div>
+  </div>
 </div>
 
 <!-- ========= NAV ========= -->
@@ -1739,17 +1813,36 @@
 <script>
 
   // Splash screen dismiss
+  function dismissReturningScreen(scrollToId) {
+    const screen = document.getElementById('returningScreen');
+    if (screen) screen.classList.remove('visible');
+    setTimeout(() => {
+      if (screen) screen.classList.add('hidden');
+      const target = document.getElementById(scrollToId);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }, 400);
+  }
+
   function dismissSplash() {
     const splash = document.getElementById('splash');
     if (!splash) return;
     splash.classList.add('hidden');
-    // Remove after transition then scroll to Taipei section
     setTimeout(() => {
       if (splash.parentNode) splash.parentNode.removeChild(splash);
-      const taipei = document.getElementById('taipei');
-      if (taipei) taipei.scrollIntoView({ behavior: 'smooth' });
+      // Show the returning user screen
+      const screen = document.getElementById('returningScreen');
+      if (screen) {
+        screen.classList.remove('hidden');
+        requestAnimationFrame(() => screen.classList.add('visible'));
+      }
     }, 700);
   }
+
+  // Yes → go to Taipei, No → go to Videos
+  const btnYes = document.getElementById('btnYes');
+  const btnNo  = document.getElementById('btnNo');
+  if (btnYes) btnYes.addEventListener('click', () => dismissReturningScreen('taipei'));
+  if (btnNo)  btnNo.addEventListener('click',  () => dismissReturningScreen('videos'));
   var splashBtn = document.getElementById('splashBtn');
   if (splashBtn) splashBtn.addEventListener('click', dismissSplash);
   var splashEl = document.getElementById('splash');
