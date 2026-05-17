@@ -591,7 +591,7 @@
 
   <div class="splash-title">Hello, Taiwan! 🇹🇼</div>
   <div class="splash-sub">Taiwan's national bird welcomes you!</div>
-  <button class="splash-btn" id="splashBtn" onclick="(function(){var s=document.getElementById('splash');if(s){s.classList.add('hidden');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},700);}})()">Let's Explore ✨</button>
+  <button class="splash-btn" id="splashBtn" onclick="(function(){var s=document.getElementById('splash');if(s){s.classList.add('hidden');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);var t=document.getElementById('taipei');if(t)t.scrollIntoView({behavior:'smooth'});},700);}})()">Let's Explore ✨</button>
 </div>
 
 <!-- ========= NAV ========= -->
@@ -1742,8 +1742,12 @@
     const splash = document.getElementById('splash');
     if (!splash) return;
     splash.classList.add('hidden');
-    // Remove after transition (700ms covers the 600ms transition + buffer)
-    setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
+    // Remove after transition then scroll to Taipei section
+    setTimeout(() => {
+      if (splash.parentNode) splash.parentNode.removeChild(splash);
+      const taipei = document.getElementById('taipei');
+      if (taipei) taipei.scrollIntoView({ behavior: 'smooth' });
+    }, 700);
   }
   var splashBtn = document.getElementById('splashBtn');
   if (splashBtn) splashBtn.addEventListener('click', dismissSplash);
