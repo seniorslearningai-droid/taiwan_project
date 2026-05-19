@@ -594,6 +594,90 @@
   .btn-yes { background: linear-gradient(135deg,#2A9D8F,#1a7a6e); color: #fff; }
   .btn-no  { background: linear-gradient(135deg,#E63946,#b52d39); color: #fff; }
 
+  /* ===== LEARN MORE MODAL ===== */
+  #learnMoreModal {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+    padding: 1rem;
+  }
+  #learnMoreModal.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal-box {
+    background: var(--cream);
+    border-radius: 24px;
+    padding: 2rem 2rem 1.5rem;
+    max-width: 640px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(31,45,61,.25);
+    position: relative;
+  }
+  .modal-box h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.8rem;
+    margin: 0 0 1.25rem;
+    color: var(--ink);
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #eee;
+    border: none;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background .15s;
+  }
+  .modal-close:hover { background: #ddd; }
+  .modal-item {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin-bottom: .85rem;
+    box-shadow: 0 4px 12px rgba(31,45,61,.07);
+    border-left: 5px solid var(--teal);
+  }
+  .modal-item h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    margin: 0 0 .35rem;
+    color: var(--ink);
+  }
+  .modal-item p { margin: 0; color: var(--soft-ink); font-size: .95rem; }
+  .learn-more-btn {
+    display: inline-block;
+    margin-top: .85rem;
+    background: linear-gradient(135deg, #1f5fbf, #0e3e8c);
+    color: #fff;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: .55rem 1.6rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(31,95,191,.3);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .learn-more-btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(31,95,191,.4); }
+  .learn-more-btn:active { transform: translateY(1px); }
+
   /* footer */
   footer {
     text-align: center;
@@ -1568,49 +1652,53 @@
 <section id="pokemon" class="block">
   <div class="section-head">
     <span class="kicker">Pokémon</span>
-    <h2>Pokémon Mezastar in Taiwan! 🎮⭐</h2>
-    <p>Mezastar is a super-fun Pokémon arcade game that arrived in Taiwan on April 2, 2025 — and you can play it right now!</p>
+    <h2>Pokémon 🎮</h2>
   </div>
   <div class="cards">
 
     <div class="card">
-      <div class="card-icon">🕹️</div>
-      <h3>What is Mezastar?</h3>
-      <p>Mezastar is an arcade game where you battle wild Pokémon on a big screen! Two players can team up at the same machine. When you win, a real star-shaped plastic tag pops out of the machine for you to keep — just like a prize!</p>
-    </div>
-
-    <div class="card">
       <div class="card-icon">⭐</div>
-      <h3>The Star-Shaped Tags</h3>
-      <p>Every game you get a Meza Tag — a shiny star-shaped tile with a Pokémon on it. Common tags have red stars, rare ones have yellow stars, and the rarest have rainbow sparkly holographic designs! Legendary Pokémon like Mewtwo and Zacian are the hardest to get.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🎯</div>
-      <h3>How to Play</h3>
-      <p>Put a coin in, then place your star tags on the glowing lanes on the panel. Press the buttons to power up your Pokémon's moves and attack! Win 3 rounds and you catch the wild Pokémon — and earn a brand new tag from the machine!</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">📍</div>
-      <h3>Where to Find it in Taiwan</h3>
-      <p>Look for Mezastar machines at <strong>Mezastar Station Taipei</strong> (near Taipei Main Station), inside <strong>Sogo</strong> and <strong>Shin Kong Mitsukoshi</strong> department stores, and at <strong>Pokémon Center Taipei</strong> where special limited tags are sometimes given out!</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🤝</div>
-      <h3>Team Up!</h3>
-      <p>Each Mezastar machine has <strong>two stations</strong> side by side sharing one big screen. That means you and a friend (or a parent!) can battle together as a team. Two sets of tags means twice the power!</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🌟</div>
-      <h3>Fun Facts</h3>
-      <p>The name "Mezastar" means <em>aiming for the stars</em>! Some special TAG Meza Tags show <strong>two Pokémon on one tile</strong>. The game is so popular it has spread to Japan, Hong Kong, Singapore, Malaysia, the Philippines, and South Korea too!</p>
+      <h3>Mezastar</h3>
+      <p>Mezastar is a super-fun Pokémon arcade game that arrived in Taiwan on April 2, 2025! Battle wild Pokémon on a big screen and win real star-shaped collectable tags that pop out of the machine.</p>
+      <button class="learn-more-btn" onclick="document.getElementById('learnMoreModal').classList.add('visible')">Learn More →</button>
     </div>
 
   </div>
 </section>
+
+<!-- ========= MEZASTAR LEARN MORE MODAL ========= -->
+<div id="learnMoreModal" role="dialog" aria-modal="true" aria-label="Mezastar details">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('learnMoreModal').classList.remove('visible')" aria-label="Close">✕</button>
+    <h2>⭐ Mezastar</h2>
+
+    <div class="modal-item">
+      <h3>⭐ The Star-Shaped Tags</h3>
+      <p>Every game you get a Meza Tag — a shiny star-shaped tile with a Pokémon on it. Common tags have red stars, rare ones have yellow stars, and the rarest have rainbow sparkly holographic designs! Legendary Pokémon like Mewtwo and Zacian are the hardest to get.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🎯 How to Play</h3>
+      <p>Put a coin in, then place your star tags on the glowing lanes on the panel. Press the buttons to power up your Pokémon's moves and attack! Win 3 rounds and you catch the wild Pokémon — and earn a brand new tag from the machine!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>📍 Where to Find it in Taiwan</h3>
+      <p>Look for Mezastar machines at <strong>Mezastar Station Taipei</strong> (near Taipei Main Station), inside <strong>Sogo</strong> and <strong>Shin Kong Mitsukoshi</strong> department stores, and at <strong>Pokémon Center Taipei</strong> where special limited tags are sometimes given out!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🤝 Team Up!</h3>
+      <p>Each Mezastar machine has <strong>two stations</strong> side by side sharing one big screen. That means you and a friend (or a parent!) can battle together as a team. Two sets of tags means twice the power!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🌟 Fun Facts</h3>
+      <p>The name "Mezastar" means <em>aiming for the stars</em>! Some special TAG Meza Tags show <strong>two Pokémon on one tile</strong>. The game is so popular it has spread to Japan, Hong Kong, Singapore, Malaysia, the Philippines, and South Korea too!</p>
+    </div>
+
+  </div>
+</div>
 
 <!-- ========= YUMMY FOOD ========= -->
 <section id="food" class="block">
@@ -1916,6 +2004,14 @@
   if (splashEl) splashEl.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' || e.key === ' ') dismissSplash();
   });
+
+  // Close Learn More modal when clicking backdrop
+  var learnMoreModal = document.getElementById('learnMoreModal');
+  if (learnMoreModal) {
+    learnMoreModal.addEventListener('click', function(e) {
+      if (e.target === learnMoreModal) learnMoreModal.classList.remove('visible');
+    });
+  }
 
   // Smooth scroll for nav links
   document.querySelectorAll('.nav-links a').forEach(a => {
