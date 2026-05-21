@@ -1663,6 +1663,13 @@
       <button class="learn-more-btn" onclick="document.getElementById('learnMoreModal').classList.add('visible')">Learn More →</button>
     </div>
 
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <h3>Pokémon Center Taipei</h3>
+      <p>Taiwan has one of only TWO official Pokémon Centers outside Japan in the whole world! Find it on the 3rd floor of Shin Kong Mitsukoshi A11, right next to Taipei 101.</p>
+      <button class="learn-more-btn" onclick="document.getElementById('pokemonCenterModal').classList.add('visible')">Learn More →</button>
+    </div>
+
   </div>
 </section>
 
@@ -1695,6 +1702,50 @@
     <div class="modal-item">
       <h3>🌟 Fun Facts</h3>
       <p>The name "Mezastar" means <em>aiming for the stars</em>! Some special TAG Meza Tags show <strong>two Pokémon on one tile</strong>. The game is so popular it has spread to Japan, Hong Kong, Singapore, Malaysia, the Philippines, and South Korea too!</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========= POKÉMON CENTER LEARN MORE MODAL ========= -->
+<div id="pokemonCenterModal" role="dialog" aria-modal="true" aria-label="Pokemon Center Taipei details">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('pokemonCenterModal').classList.remove('visible')" aria-label="Close">✕</button>
+    <h2>🏪 Pokémon Center Taipei</h2>
+
+    <div class="modal-item">
+      <h3>🌏 Only the 2nd in the World Outside Japan!</h3>
+      <p>Pokémon Center Taipei opened on December 8, 2023 — it is only the <strong>second official Pokémon Center ever opened outside Japan</strong> in the entire world! The number 8 in Chinese culture is considered very lucky, so opening on the 8th was extra special.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>📍 Where is it?</h3>
+      <p>It's on the <strong>3rd floor of Shin Kong Mitsukoshi A11</strong>, No. 11 Songshou Road, Xinyi District — right next to Taipei 101! To get there, take the MRT Blue Line to <strong>Taipei City Hall Station, Exit 2</strong> and walk about 8 minutes.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🕐 Opening Hours</h3>
+      <p><strong>Mon–Thu & Sun:</strong> 11:00 AM – 9:30 PM<br><strong>Fri & Sat:</strong> 11:00 AM – 10:00 PM<br>Best time to visit: right when it opens on a weekday — less crowded!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🛍️ What Can You Buy?</h3>
+      <p>Plush toys, Pokémon Trading Cards, clothing, keychains, stationery, and mugs. Best of all: <strong>Taiwan-exclusive items</strong> you can't buy anywhere else — including a Pikachu wearing round glasses and carrying tropical fruits, inspired by Taiwan being the "Kingdom of Fruit!"</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🚇 The Special Pokémon EasyCard</h3>
+      <p>You can buy a <strong>Pokémon-themed EasyCard</strong> — the card you tap to ride Taipei's MRT subway! It features Pikachu, Jigglypuff, and Dragonite at a Taiwan night market. You can ride the train like a real Pokémon Trainer!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🐉 Meet the Mascots!</h3>
+      <p>Most Pokémon Centers only have Pikachu as a mascot — but Taipei chose <strong>Dragonite</strong> as a co-mascot too! There's a giant flying Dragonite statue at the entrance. Dragonite was chosen because it looks like it could fly over Taiwan's beautiful island landscape.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🌟 Fun Facts</h3>
+      <p>When it first opened, the crowds were so huge the store needed a <strong>ticket system</strong> just to get in! A special "Taipei's Pikachu" trading card was given free on opening day — it's now very rare and collectible worldwide. The store also has <strong>Ga-Olé arcade machines</strong> with space for 140 people!</p>
     </div>
 
   </div>
@@ -2005,13 +2056,13 @@
     if (e.key === 'Enter' || e.key === ' ') dismissSplash();
   });
 
-  // Close Learn More modal when clicking backdrop
-  var learnMoreModal = document.getElementById('learnMoreModal');
-  if (learnMoreModal) {
-    learnMoreModal.addEventListener('click', function(e) {
-      if (e.target === learnMoreModal) learnMoreModal.classList.remove('visible');
+  // Close modals when clicking backdrop
+  ['learnMoreModal', 'pokemonCenterModal'].forEach(function(id) {
+    var modal = document.getElementById(id);
+    if (modal) modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('visible');
     });
-  }
+  });
 
   // Smooth scroll for nav links
   document.querySelectorAll('.nav-links a').forEach(a => {
