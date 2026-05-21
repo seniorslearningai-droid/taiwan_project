@@ -595,7 +595,7 @@
   .btn-no  { background: linear-gradient(135deg,#E63946,#b52d39); color: #fff; }
 
   /* ===== LEARN MORE MODAL ===== */
-  #learnMoreModal {
+  .learn-modal {
     position: fixed;
     inset: 0;
     z-index: 300;
@@ -610,7 +610,7 @@
     transition: opacity .3s ease;
     padding: 1rem;
   }
-  #learnMoreModal.visible {
+  .learn-modal.visible {
     opacity: 1;
     pointer-events: all;
   }
@@ -1674,7 +1674,7 @@
 </section>
 
 <!-- ========= MEZASTAR LEARN MORE MODAL ========= -->
-<div id="learnMoreModal" role="dialog" aria-modal="true" aria-label="Mezastar details">
+<div id="learnMoreModal" class="learn-modal" role="dialog" aria-modal="true" aria-label="Mezastar details">
   <div class="modal-box">
     <button class="modal-close" onclick="document.getElementById('learnMoreModal').classList.remove('visible')" aria-label="Close">✕</button>
     <h2>⭐ Mezastar</h2>
@@ -1708,7 +1708,7 @@
 </div>
 
 <!-- ========= POKÉMON CENTER LEARN MORE MODAL ========= -->
-<div id="pokemonCenterModal" role="dialog" aria-modal="true" aria-label="Pokemon Center Taipei details">
+<div id="pokemonCenterModal" class="learn-modal" role="dialog" aria-modal="true" aria-label="Pokemon Center Taipei details">
   <div class="modal-box">
     <button class="modal-close" onclick="document.getElementById('pokemonCenterModal').classList.remove('visible')" aria-label="Close">✕</button>
     <h2>🏪 Pokémon Center Taipei</h2>
