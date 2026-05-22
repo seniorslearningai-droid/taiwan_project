@@ -1957,6 +1957,13 @@
   <div class="cards">
 
     <div class="card">
+      <div class="card-icon">🏙️</div>
+      <h3>Taipei 101</h3>
+      <p>One of the most famous buildings in the world — 508 metres tall, shaped like lucky bamboo, with a giant golden ball inside that keeps it safe during typhoons and earthquakes!</p>
+      <button class="learn-more-btn" onclick="document.getElementById('taipei101Modal').classList.add('visible')">Learn More →</button>
+    </div>
+
+    <div class="card">
       <div class="card-icon">🏬</div>
       <h3>Shin Kong Mitsukoshi</h3>
       <p>Taiwan's most famous department store — a giant team-up between Taiwan and Japan! Four huge buildings right next to Taipei 101, connected by sky bridges, packed with food, anime, Pokémon, and so much more.</p>
@@ -1965,6 +1972,56 @@
 
   </div>
 </section>
+
+<!-- ========= TAIPEI 101 LEARN MORE MODAL ========= -->
+<div id="taipei101Modal" class="learn-modal" role="dialog" aria-modal="true" aria-label="Taipei 101 details">
+  <div class="modal-box modal-box-full">
+    <button class="modal-close" onclick="document.getElementById('taipei101Modal').classList.remove('visible')" aria-label="Close">✕</button>
+    <h2>🏙️ Taipei 101</h2>
+    <p style="color:var(--soft-ink);margin:-0.5rem 0 1.25rem;font-size:1rem;">台北101 — One of the world's most iconic skyscrapers</p>
+
+    <div class="modal-item">
+      <h3>📏 How Tall is It?</h3>
+      <p>Taipei 101 stands <strong>508 metres</strong> tall and has <strong>101 floors</strong> above ground (plus 5 underground). From 2004 to 2010 it was the <strong>tallest building in the entire world</strong>! Today it is still one of the tallest, and the tallest building in Taiwan by far.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🎋 Why Does it Look Like Bamboo?</h3>
+      <p>The building was designed to look like <strong>stacked segments of bamboo</strong> — a plant that symbolises good luck, strength, and growth in Chinese culture. Each section of 8 floors represents the lucky number 8 (八 bā), which sounds like the word for "prosperity" in Chinese!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🔮 The Giant Golden Ball Inside</h3>
+      <p>One of the coolest things about Taipei 101 is a <strong>660-tonne golden ball</strong> hanging between floors 88 and 92 — it's one of the largest of its kind in the world! It's called a <em>tuned mass damper</em> and it swings gently to balance the building during strong winds, typhoons, and earthquakes. You can see it from a special viewing area!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🔭 The Observation Deck</h3>
+      <p>Ride the world's fastest elevator (it was the fastest when built!) to the <strong>indoor observation deck on floor 89</strong> in just 37 seconds! On a clear day you can see all of Taipei spread out below. There is also an <strong>outdoor deck on floor 91</strong> where you can feel the wind high above the city.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🎆 New Year's Fireworks</h3>
+      <p>Every New Year's Eve, Taipei 101 puts on one of the <strong>most spectacular fireworks shows in the world</strong> — watched live by hundreds of thousands of people in the streets below and by millions on TV! The fireworks shoot out from different floors of the building all at once.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🛍️ The Mall at the Bottom</h3>
+      <p>The base of the building has a huge <strong>luxury shopping mall</strong> with restaurants, cafés, designer shops, and a famous food court in the basement. It's a great place to eat after visiting the observation deck!</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🚇 How to Get There</h3>
+      <p>Take the MRT Red Line (Tamsui-Xinyi Line) to <strong>Taipei 101/World Trade Center Station</strong> — the building is right outside Exit 4! The observation deck is open daily from <strong>9:00 AM to 10:00 PM</strong>.</p>
+    </div>
+
+    <div class="modal-item">
+      <h3>🌟 Fun Facts</h3>
+      <p>The number <strong>101</strong> was chosen because it goes one step beyond 100 — the symbol of perfection — meaning always striving to do better! The building has survived major earthquakes and super typhoons. It even has its own <strong>Starbucks on the 35th floor</strong> — one of the highest Starbucks in the world!</p>
+    </div>
+
+  </div>
+</div>
 
 <!-- ========= SKM LEARN MORE MODAL ========= -->
 <div id="skmModal" class="learn-modal" role="dialog" aria-modal="true" aria-label="Shin Kong Mitsukoshi details">
@@ -2129,7 +2186,7 @@
   });
 
   // Close modals when clicking backdrop
-  ['learnMoreModal', 'pokemonCenterModal', 'skmModal'].forEach(function(id) {
+  ['learnMoreModal', 'pokemonCenterModal', 'skmModal', 'taipei101Modal'].forEach(function(id) {
     var modal = document.getElementById(id);
     if (modal) modal.addEventListener('click', function(e) {
       if (e.target === modal) modal.classList.remove('visible');
