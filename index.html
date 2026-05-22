@@ -694,6 +694,43 @@
   }
   footer .heart { color: var(--red); }
 
+  /* ===== MUSIC PLAYER ===== */
+  #musicPlayer {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    background: rgba(255,247,232,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid #ffe3a8;
+    border-radius: 999px;
+    padding: .45rem .9rem .45rem .55rem;
+    box-shadow: 0 4px 18px rgba(31,45,61,.15);
+  }
+  #musicToggle {
+    background: linear-gradient(135deg,#2A9D8F,#1a7a6e);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: transform .12s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #musicToggle:hover { transform: scale(1.1); }
+  #musicLabel {
+    font-family: 'Fredoka', sans-serif;
+    font-size: .85rem;
+    color: var(--soft-ink);
+    white-space: nowrap;
+  }
+
   /* responsiveness */
   @media (max-width: 720px) {
     .sun { width: 90px; height: 90px; top: 20px; right: 20px; }
@@ -2305,5 +2342,37 @@
   });
 </script>
 
+<!-- ===== BACKGROUND MUSIC PLAYER ===== -->
+<div id="musicPlayer">
+  <button id="musicToggle" aria-label="Play background music">▶</button>
+  <span id="musicLabel">🎵 Music</span>
+</div>
+<audio id="bgMusic" loop preload="none">
+  <source src="audio/background-music.mp3" type="audio/mpeg">
+</audio>
+<script>
+  (function() {
+    var btn   = document.getElementById('musicToggle');
+    var audio = document.getElementById('bgMusic');
+    var label = document.getElementById('musicLabel');
+    var playing = false;
+    audio.volume = 0.25;
+    btn.addEventListener('click', function() {
+      if (!playing) {
+        audio.play();
+        btn.textContent = '⏸';
+        btn.setAttribute('aria-label','Pause background music');
+        label.textContent = '🎵 Playing';
+        playing = true;
+      } else {
+        audio.pause();
+        btn.textContent = '▶';
+        btn.setAttribute('aria-label','Play background music');
+        label.textContent = '🎵 Music';
+        playing = false;
+      }
+    });
+  })();
+</script>
 </body>
 </html>
