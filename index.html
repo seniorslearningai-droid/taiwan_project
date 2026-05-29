@@ -2284,7 +2284,11 @@
 <script>
 
   // Splash screen dismiss
+  var hasVisitedBefore = localStorage.getItem('taiwan_visited');
+
   function dismissReturningScreen(scrollToId) {
+    // Save that they've visited so we never ask again
+    localStorage.setItem('taiwan_visited', 'true');
     const screen = document.getElementById('returningScreen');
     if (screen) screen.classList.remove('visible');
     setTimeout(() => {
@@ -2302,11 +2306,18 @@
     startMusic();
     setTimeout(() => {
       if (splash.parentNode) splash.parentNode.removeChild(splash);
-      // Show the returning user screen
-      const screen = document.getElementById('returningScreen');
-      if (screen) {
-        screen.classList.remove('hidden');
-        requestAnimationFrame(() => screen.classList.add('visible'));
+
+      if (hasVisitedBefore) {
+        // Returning visitor — skip the question, go straight to Taipei
+        const taipei = document.getElementById('taipei');
+        if (taipei) taipei.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // First-time visitor — show the "Have you used this before?" screen
+        const screen = document.getElementById('returningScreen');
+        if (screen) {
+          screen.classList.remove('hidden');
+          requestAnimationFrame(() => screen.classList.add('visible'));
+        }
       }
     }, 700);
   }
