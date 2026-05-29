@@ -2357,13 +2357,32 @@
     var label = document.getElementById('musicLabel');
     var playing = false;
     audio.volume = 0.12;
-    btn.addEventListener('click', function() {
-      if (!playing) {
-        audio.play();
+
+    function startMusic() {
+      audio.play().then(function() {
         btn.textContent = '⏸';
         btn.setAttribute('aria-label','Pause background music');
         label.textContent = '🎵 Playing';
         playing = true;
+      }).catch(function() {});
+    }
+
+    // Try autoplay immediately
+    startMusic();
+
+    // If browser blocked it, start on first user interaction
+    function onFirstInteraction() {
+      if (!playing) startMusic();
+      document.removeEventListener('click', onFirstInteraction);
+      document.removeEventListener('keydown', onFirstInteraction);
+    }
+    document.addEventListener('click', onFirstInteraction);
+    document.addEventListener('keydown', onFirstInteraction);
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!playing) {
+        startMusic();
       } else {
         audio.pause();
         btn.textContent = '▶';
