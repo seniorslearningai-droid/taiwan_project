@@ -2298,6 +2298,8 @@
     const splash = document.getElementById('splash');
     if (!splash) return;
     splash.classList.add('hidden');
+    // Start music on this user click (Chrome requires a real interaction)
+    startMusic();
     setTimeout(() => {
       if (splash.parentNode) splash.parentNode.removeChild(splash);
       // Show the returning user screen
@@ -2351,47 +2353,32 @@
   <source src="audio/background-music.mp3" type="audio/mpeg">
 </audio>
 <script>
-  (function() {
-    var btn   = document.getElementById('musicToggle');
-    var audio = document.getElementById('bgMusic');
-    var label = document.getElementById('musicLabel');
-    var playing = false;
-    audio.volume = 0.12;
+  var bgAudio = document.getElementById('bgMusic');
+  var musicBtn = document.getElementById('musicToggle');
+  var musicLabel = document.getElementById('musicLabel');
+  var musicPlaying = false;
+  bgAudio.volume = 0.12;
 
-    function startMusic() {
-      audio.play().then(function() {
-        btn.textContent = '⏸';
-        btn.setAttribute('aria-label','Pause background music');
-        label.textContent = '🎵 Playing';
-        playing = true;
-      }).catch(function() {});
+  function startMusic() {
+    bgAudio.play().then(function() {
+      musicBtn.textContent = '⏸';
+      musicBtn.setAttribute('aria-label', 'Pause background music');
+      musicLabel.textContent = '🎵 Playing';
+      musicPlaying = true;
+    }).catch(function() {});
+  }
+
+  musicBtn.addEventListener('click', function() {
+    if (!musicPlaying) {
+      startMusic();
+    } else {
+      bgAudio.pause();
+      musicBtn.textContent = '▶';
+      musicBtn.setAttribute('aria-label', 'Play background music');
+      musicLabel.textContent = '🎵 Music';
+      musicPlaying = false;
     }
-
-    // Try autoplay immediately
-    startMusic();
-
-    // If browser blocked it, start on first user interaction
-    function onFirstInteraction() {
-      if (!playing) startMusic();
-      document.removeEventListener('click', onFirstInteraction);
-      document.removeEventListener('keydown', onFirstInteraction);
-    }
-    document.addEventListener('click', onFirstInteraction);
-    document.addEventListener('keydown', onFirstInteraction);
-
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (!playing) {
-        startMusic();
-      } else {
-        audio.pause();
-        btn.textContent = '▶';
-        btn.setAttribute('aria-label','Play background music');
-        label.textContent = '🎵 Music';
-        playing = false;
-      }
-    });
-  })();
+  });
 </script>
 </body>
 </html>
