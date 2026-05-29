@@ -2379,6 +2379,19 @@
       musicPlaying = false;
     }
   });
+
+  // Pause music when user clicks into a video iframe
+  window.addEventListener('blur', function() {
+    if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+      if (musicPlaying) {
+        bgAudio.pause();
+        musicBtn.textContent = '▶';
+        musicBtn.setAttribute('aria-label', 'Play background music');
+        musicLabel.textContent = '🎵 Music';
+        musicPlaying = false;
+      }
+    }
+  });
 </script>
 </body>
 </html>
