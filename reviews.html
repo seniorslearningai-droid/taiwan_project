@@ -403,8 +403,8 @@
     }).then(function() {
       document.getElementById('reviewerName').value = '';
       document.getElementById('reviewText').value = '';
-      selectedStars = 0;
-      updateStars(0);
+      starSlider.value = 0;
+      syncSlider();
       btn.disabled = false;
       btn.textContent = 'Submit Review 🎉';
       loadReviews();
