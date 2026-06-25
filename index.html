@@ -74,20 +74,61 @@
     height: 36px;
     flex: 0 0 auto;
   }
-  .nav-links {
-    display: flex; gap: .35rem; flex-wrap: wrap;
+  .nav-toggle {
+    background: none;
+    border: 2px solid #ffe3a8;
+    border-radius: 999px;
+    padding: .45rem 1rem;
+    font-size: 1rem;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: background .15s;
   }
-  .nav-links a {
+  .nav-toggle:hover { background: #ffe3a8; }
+  .nav-drawer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease;
+    border-top: 2px solid transparent;
+  }
+  .nav-drawer.open {
+    max-height: 600px;
+    border-top-color: #ffe3a8;
+  }
+  .nav-drawer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: .5rem 1.25rem .9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 2rem;
+  }
+  .nav-group { display: flex; flex-direction: column; }
+  .nav-group-label {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #b07a20;
+    padding: .5rem .5rem .2rem;
+  }
+  .nav-group a {
     text-decoration: none;
     color: var(--ink);
     font-weight: 700;
-    padding: .5rem .85rem;
+    padding: .38rem .75rem;
     border-radius: 999px;
     font-size: .95rem;
-    transition: background .15s ease, color .15s ease, transform .1s ease;
+    transition: background .15s ease, transform .1s ease;
+    white-space: nowrap;
   }
-  .nav-links a:hover { background: #ffe3a8; }
-  .nav-links a:active { transform: translateY(1px); }
+  .nav-group a:hover { background: #ffe3a8; }
+  .nav-group a:active { transform: translateY(1px); }
 
   /* ========= HERO (sunny bright blue) ========= */
   .hero {
@@ -736,7 +777,7 @@
     .sun { width: 90px; height: 90px; top: 20px; right: 20px; }
     .mascots { grid-template-columns: 1fr; }
     .mascot svg { height: 200px; }
-    .nav-links a { padding: .4rem .65rem; font-size: .88rem; }
+
   }
 </style>
 </head>
@@ -846,18 +887,32 @@
       </svg>
       Hello Taiwan!
     </a>
-    <div class="nav-links">
-<a href="#taipei">Taipei</a>
-      <a href="#animals">Taiwan's Animals</a>
-      <a href="#birds">Taiwan Birds</a>
-      <a href="#pokemon">Pokémon</a>
-      <a href="#food">Yummy Food</a>
-      <a href="#phrases">Useful Phrases</a>
-      <a href="#facts">Fun Facts</a>
-      <a href="#shops">Shops</a>
-      <a href="#coolplaces">Coolest Places</a>
-      <a href="#videos">Videos</a>
-      <a href="#safety">Safety</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navDrawer">
+      <span id="navToggleIcon">☰</span> Menu
+    </button>
+  </div>
+  <div class="nav-drawer" id="navDrawer" aria-hidden="true">
+    <div class="nav-drawer-inner">
+      <div class="nav-group">
+        <div class="nav-group-label">Start here</div>
+        <a href="#taipei">Taipei</a>
+        <a href="#animals">Taiwan's Animals</a>
+        <a href="#food">Yummy Food</a>
+        <a href="#phrases">Useful Phrases</a>
+        <a href="#safety">Safety</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Taiwan's cool things</div>
+        <a href="#shops">Shops</a>
+        <a href="#coolplaces">Coolest Places</a>
+        <a href="#pokemon">Pokémon</a>
+        <a href="#birds">Taiwan's Birds</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Everything else</div>
+        <a href="#facts">Fun Facts</a>
+        <a href="#videos">Videos</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -2342,13 +2397,27 @@
     });
   });
 
-  // Smooth scroll for nav links
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', e => {
-      const href = a.getAttribute('href');
+  // Collapsible nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var navDrawer = document.getElementById('navDrawer');
+  var navToggleIcon = document.getElementById('navToggleIcon');
+  navToggle.addEventListener('click', function() {
+    var isOpen = navDrawer.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+    navDrawer.setAttribute('aria-hidden', !isOpen);
+    navToggleIcon.textContent = isOpen ? '✕' : '☰';
+  });
+  // Smooth scroll + close drawer for nav links
+  document.querySelectorAll('.nav-drawer a').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      navDrawer.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navDrawer.setAttribute('aria-hidden', 'true');
+      navToggleIcon.textContent = '☰';
+      var href = a.getAttribute('href');
       if (href.startsWith('#')) {
         e.preventDefault();
-        const el = document.querySelector(href);
+        var el = document.querySelector(href);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
