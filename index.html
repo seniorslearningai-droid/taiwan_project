@@ -2439,6 +2439,8 @@
   }
   function closeReviews() {
     document.getElementById('reviewsOverlay').classList.remove('open');
+    var taipei = document.getElementById('taipei');
+    if (taipei) taipei.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Collapsible nav toggle
