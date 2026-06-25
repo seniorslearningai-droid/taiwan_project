@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews — Hello Taiwan!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky-top: #5bc8f5;
+    --sky-bottom: #a8e6ff;
+    --ink: #1a2e3b;
+    --soft-ink: #4a6070;
+    --card-bg: #fffdf7;
+    --sun: #FFD93D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, var(--sky-top) 0%, var(--sky-bottom) 40%, #e8f7e0 100%);
+    min-height: 100vh;
+    color: var(--ink);
+  }
+
+  /* ===== HEADER ===== */
+  .page-header {
+    background: rgba(255,247,232,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px solid #ffe3a8;
+    padding: .75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .back-btn {
+    text-decoration: none;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    background: none;
+    border: 2px solid #ffe3a8;
+    border-radius: 999px;
+    padding: .4rem 1rem;
+    cursor: pointer;
+    transition: background .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .back-btn:hover { background: #ffe3a8; }
+  .page-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  .hero-text {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .hero-text h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: .4rem;
+  }
+  .hero-text p {
+    color: var(--soft-ink);
+    font-size: 1.05rem;
+  }
+
+  /* ===== FORM ===== */
+  .review-form {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 24px rgba(31,45,61,.12);
+    margin-bottom: 2.5rem;
+    border: 2px solid #ffe3a8;
+  }
+  .review-form h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .field { margin-bottom: 1.1rem; }
+  .field label {
+    display: block;
+    font-weight: 700;
+    font-size: .95rem;
+    margin-bottom: .35rem;
+    color: var(--ink);
+  }
+  .field input, .field textarea {
+    width: 100%;
+    padding: .6rem .85rem;
+    border: 2px solid #ffe3a8;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    background: #fffef9;
+    transition: border-color .15s;
+    outline: none;
+  }
+  .field input:focus, .field textarea:focus { border-color: #5bc8f5; }
+  .field textarea { resize: vertical; min-height: 90px; }
+
+  /* Star rating */
+  .stars {
+    display: flex;
+    gap: .4rem;
+    margin-top: .2rem;
+  }
+  .stars button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform .1s;
+    padding: 0;
+  }
+  .stars button:hover, .stars button.active { transform: scale(1.2); }
+  .star-val { color: #ccc; }
+  .star-val.lit { color: #FFD93D; }
+
+  .submit-btn {
+    background: linear-gradient(135deg, #2A9D8F, #1a7a6e);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: .7rem 2rem;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+    box-shadow: 0 4px 12px rgba(42,157,143,.35);
+    width: 100%;
+    margin-top: .5rem;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(42,157,143,.45); }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* ===== REVIEWS LIST ===== */
+  .reviews-section h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 1.1rem;
+  }
+  .no-reviews {
+    text-align: center;
+    color: var(--soft-ink);
+    font-size: 1rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 2px dashed #ffe3a8;
+  }
+  .review-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 12px rgba(31,45,61,.09);
+    border: 2px solid #ffe3a8;
+  }
+  .review-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .4rem;
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+  .reviewer-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+  .review-stars { font-size: 1.15rem; letter-spacing: .05em; }
+  .review-date { font-size: .8rem; color: var(--soft-ink); }
+  .review-text { font-size: .97rem; line-height: 1.55; color: var(--soft-ink); }
+
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #2A9D8F;
+    color: #fff;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: .7rem 1.6rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.18);
+    transition: transform .35s ease;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html" class="back-btn">← Back</a>
+  <span class="page-title">⭐ Reviews</span>
+</header>
+
+<main class="main">
+  <div class="hero-text">
+    <h1>What do you think? 🌟</h1>
+    <p>Tell us what you loved about the Hello Taiwan! website.</p>
+  </div>
+
+  <div class="review-form">
+    <h2>Leave a review</h2>
+    <div class="field">
+      <label for="reviewerName">Your name (or nickname)</label>
+      <input type="text" id="reviewerName" placeholder="e.g. Emily, Age 9" maxlength="50">
+    </div>
+    <div class="field">
+      <label>Star rating</label>
+      <div class="stars" id="starRow" role="group" aria-label="Star rating">
+        <button type="button" class="star-val" data-val="1" aria-label="1 star">★</button>
+        <button type="button" class="star-val" data-val="2" aria-label="2 stars">★</button>
+        <button type="button" class="star-val" data-val="3" aria-label="3 stars">★</button>
+        <button type="button" class="star-val" data-val="4" aria-label="4 stars">★</button>
+        <button type="button" class="star-val" data-val="5" aria-label="5 stars">★</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="reviewText">Your review</label>
+      <textarea id="reviewText" placeholder="What was your favourite part?" maxlength="400"></textarea>
+    </div>
+    <button class="submit-btn" id="submitBtn">Submit Review 🎉</button>
+  </div>
+
+  <div class="reviews-section">
+    <h2>All reviews</h2>
+    <div id="reviewsList"></div>
+  </div>
+</main>
+
+<div class="toast" id="toast">Review saved! Thank you 🎉</div>
+
+<script>
+  var selectedStars = 0;
+  var starBtns = document.querySelectorAll('.star-val');
+
+  function updateStars(val) {
+    starBtns.forEach(function(btn) {
+      var n = parseInt(btn.getAttribute('data-val'));
+      btn.classList.toggle('lit', n <= val);
+      btn.classList.toggle('active', n <= val);
+    });
+  }
+
+  starBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      selectedStars = parseInt(btn.getAttribute('data-val'));
+      updateStars(selectedStars);
+    });
+    btn.addEventListener('mouseenter', function() {
+      updateStars(parseInt(btn.getAttribute('data-val')));
+    });
+  });
+  document.getElementById('starRow').addEventListener('mouseleave', function() {
+    updateStars(selectedStars);
+  });
+
+  function loadReviews() {
+    var list = document.getElementById('reviewsList');
+    var reviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
+    if (reviews.length === 0) {
+      list.innerHTML = '<div class="no-reviews">No reviews yet — be the first! 🌟</div>';
+      return;
+    }
+    list.innerHTML = reviews.slice().reverse().map(function(r) {
+      var stars = '';
+      for (var i = 1; i <= 5; i++) stars += i <= r.stars ? '★' : '☆';
+      return '<div class="review-card">' +
+        '<div class="review-card-top">' +
+          '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
+          '<span class="review-stars" style="color:#FFD93D">' + stars + '</span>' +
+          '<span class="review-date">' + r.date + '</span>' +
+        '</div>' +
+        '<div class="review-text">' + escHtml(r.text) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    var name = document.getElementById('reviewerName').value.trim() || 'Anonymous';
+    var text = document.getElementById('reviewText').value.trim();
+    if (!text) { alert('Please write something in your review!'); return; }
+    if (selectedStars === 0) { alert('Please pick a star rating!'); return; }
+    var reviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
+    var now = new Date();
+    var date = now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    reviews.push({ name: name, stars: selectedStars, text: text, date: date });
+    localStorage.setItem('taiwan_reviews', JSON.stringify(reviews));
+    document.getElementById('reviewerName').value = '';
+    document.getElementById('reviewText').value = '';
+    selectedStars = 0;
+    updateStars(0);
+    loadReviews();
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2500);
+  });
+
+  loadReviews();
+</script>
+</body>
+</html>

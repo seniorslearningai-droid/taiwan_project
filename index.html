@@ -735,12 +735,35 @@
   }
   footer .heart { color: var(--red); }
 
-  /* ===== MUSIC PLAYER ===== */
-  #musicPlayer {
+  /* ===== TOP CONTROLS (reviews + music) ===== */
+  #topControls {
     position: fixed;
     top: .6rem;
     right: 1rem;
     z-index: 400;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  #reviewsBtn {
+    text-decoration: none;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--ink);
+    background: rgba(255,247,232,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid #ffe3a8;
+    border-radius: 999px;
+    padding: .45rem 1rem;
+    box-shadow: 0 4px 18px rgba(31,45,61,.15);
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  #reviewsBtn:hover { background: #ffe3a8; }
+  /* ===== MUSIC PLAYER ===== */
+  #musicPlayer {
     display: flex;
     align-items: center;
     gap: .6rem;
@@ -2424,10 +2447,13 @@
   });
 </script>
 
-<!-- ===== BACKGROUND MUSIC PLAYER ===== -->
-<div id="musicPlayer">
-  <button id="musicToggle" aria-label="Play background music">▶</button>
-  <span id="musicLabel">🎵 Music</span>
+<!-- ===== TOP CONTROLS ===== -->
+<div id="topControls">
+  <a href="reviews.html" id="reviewsBtn">⭐ Reviews</a>
+  <div id="musicPlayer">
+    <button id="musicToggle" aria-label="Play background music">▶</button>
+    <span id="musicLabel">🎵 Music</span>
+  </div>
 </div>
 <audio id="bgMusic" loop preload="none">
   <source src="audio/background-music.mp3" type="audio/mpeg">
