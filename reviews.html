@@ -231,7 +231,7 @@
 <body>
 
 <header class="page-header">
-  <a href="index.html" class="back-btn">← Back</a>
+  <button class="back-btn" onclick="if(window.parent!==window&&window.parent.closeReviews){window.parent.closeReviews()}else{window.location.href='index.html'}">← Back</button>
   <span class="page-title">⭐ Reviews</span>
 </header>
 

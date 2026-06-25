@@ -746,7 +746,6 @@
     gap: .6rem;
   }
   #reviewsBtn {
-    text-decoration: none;
     font-family: 'Fredoka', sans-serif;
     font-weight: 700;
     font-size: .9rem;
@@ -760,8 +759,18 @@
     box-shadow: 0 4px 18px rgba(31,45,61,.15);
     white-space: nowrap;
     transition: background .15s;
+    cursor: pointer;
   }
   #reviewsBtn:hover { background: #ffe3a8; }
+  #reviewsOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 350;
+    background: #fff;
+  }
+  #reviewsOverlay.open { display: block; }
+  #reviewsFrame { width: 100%; height: 100%; border: none; }
   /* ===== MUSIC PLAYER ===== */
   #musicPlayer {
     display: flex;
@@ -2421,6 +2430,17 @@
     });
   });
 
+  // Reviews overlay
+  function openReviews() {
+    var overlay = document.getElementById('reviewsOverlay');
+    var frame = document.getElementById('reviewsFrame');
+    if (!frame.src || frame.src === window.location.href) frame.src = 'reviews.html';
+    overlay.classList.add('open');
+  }
+  function closeReviews() {
+    document.getElementById('reviewsOverlay').classList.remove('open');
+  }
+
   // Collapsible nav toggle
   var navToggle = document.getElementById('navToggle');
   var navDrawer = document.getElementById('navDrawer');
@@ -2448,9 +2468,14 @@
   });
 </script>
 
+<!-- ===== REVIEWS OVERLAY ===== -->
+<div id="reviewsOverlay">
+  <iframe id="reviewsFrame" src="" title="Reviews"></iframe>
+</div>
+
 <!-- ===== TOP CONTROLS ===== -->
 <div id="topControls">
-  <a href="reviews.html" id="reviewsBtn">⭐ Reviews</a>
+  <button id="reviewsBtn" onclick="openReviews()">⭐ Reviews</button>
   <div id="musicPlayer">
     <button id="musicToggle" aria-label="Play background music">▶</button>
     <span id="musicLabel">🎵 Music</span>
