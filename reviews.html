@@ -282,25 +282,33 @@
     updateStars(selectedStars);
   });
 
+  var pinnedReviews = [
+    {
+      name: 'Codex',
+      stars: 4,
+      text: 'This is a cheerful, family-friendly guide to Taiwan that works well for kids and parents exploring together. The sections are fun, approachable, and full of interesting facts about Taipei, animals, food, phrases, Pokémon, shopping, and safety. The grouped menu makes it easier to start, and the Mandarin audio buttons are a great interactive touch.',
+      date: '25 Jun 2026'
+    }
+  ];
+
+  function renderCard(r) {
+    var stars = '';
+    for (var i = 1; i <= 5; i++) stars += i <= r.stars ? '★' : '☆';
+    return '<div class="review-card">' +
+      '<div class="review-card-top">' +
+        '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
+        '<span class="review-stars" style="color:#FFD93D">' + stars + '</span>' +
+        '<span class="review-date">' + r.date + '</span>' +
+      '</div>' +
+      '<div class="review-text">' + escHtml(r.text) + '</div>' +
+    '</div>';
+  }
+
   function loadReviews() {
     var list = document.getElementById('reviewsList');
-    var reviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
-    if (reviews.length === 0) {
-      list.innerHTML = '<div class="no-reviews">No reviews yet — be the first! 🌟</div>';
-      return;
-    }
-    list.innerHTML = reviews.slice().reverse().map(function(r) {
-      var stars = '';
-      for (var i = 1; i <= 5; i++) stars += i <= r.stars ? '★' : '☆';
-      return '<div class="review-card">' +
-        '<div class="review-card-top">' +
-          '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
-          '<span class="review-stars" style="color:#FFD93D">' + stars + '</span>' +
-          '<span class="review-date">' + r.date + '</span>' +
-        '</div>' +
-        '<div class="review-text">' + escHtml(r.text) + '</div>' +
-      '</div>';
-    }).join('');
+    var userReviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
+    var all = userReviews.slice().reverse().concat(pinnedReviews);
+    list.innerHTML = all.map(renderCard).join('');
   }
 
   function escHtml(str) {
