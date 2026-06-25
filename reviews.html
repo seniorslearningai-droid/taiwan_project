@@ -120,10 +120,37 @@
   /* Star rating slider */
   .star-slider-wrap { display: flex; flex-direction: column; gap: .5rem; margin-top: .2rem; }
   #starSlider {
+    -webkit-appearance: none;
+    appearance: none;
     width: 100%;
-    accent-color: #FFD93D;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
     cursor: pointer;
-    height: 6px;
+    background: linear-gradient(to right, #FFD93D 50%, #ddd 50%);
+  }
+  #starSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #FFD93D;
+    border: 2px solid #b07a20;
+    cursor: pointer;
+  }
+  #starSlider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #FFD93D;
+    border: 2px solid #b07a20;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  #starSlider::-moz-range-track {
+    height: 8px;
+    border-radius: 4px;
+    background: transparent;
   }
   .star-slider-display { display: flex; align-items: center; gap: .75rem; }
   #starValue {
@@ -304,6 +331,8 @@
 
   function syncSlider() {
     selectedStars = parseFloat(starSlider.value);
+    var pct = (selectedStars / 5 * 100).toFixed(2);
+    starSlider.style.background = 'linear-gradient(to right, #FFD93D ' + pct + '%, #ddd ' + pct + '%)';
     starValueEl.textContent = selectedStars.toFixed(1);
     starPreview.innerHTML = renderStars(selectedStars);
   }
