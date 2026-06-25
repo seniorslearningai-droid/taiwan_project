@@ -118,11 +118,12 @@
   .field textarea { resize: vertical; min-height: 90px; }
 
   /* Star rating slider */
-  .star-slider-wrap { display: flex; flex-direction: column; gap: .5rem; margin-top: .2rem; }
+  .star-slider-wrap { display: flex; flex-direction: column; gap: .5rem; margin-top: .2rem; overflow: visible; }
   #starSlider {
     -webkit-appearance: none;
     appearance: none;
-    width: 100%;
+    width: calc(100% + 22px);
+    margin: 0 -11px;
     height: 8px;
     border-radius: 4px;
     outline: none;
