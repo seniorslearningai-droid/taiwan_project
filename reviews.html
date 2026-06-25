@@ -212,6 +212,8 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -258,6 +260,18 @@
 <div class="toast" id="toast">Review saved! Thank you 🎉</div>
 
 <script>
+  // Firebase setup
+  var firebaseConfig = {
+    apiKey: "AIzaSyDVHOL5Dwm1mZ4gDGMOIbMEJeZNZun-J3k",
+    authDomain: "taiwan-project-reviews.firebaseapp.com",
+    projectId: "taiwan-project-reviews",
+    storageBucket: "taiwan-project-reviews.firebasestorage.app",
+    messagingSenderId: "486634112887",
+    appId: "1:486634112887:web:dec10960ef0159f82a8372"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+
   var selectedStars = 0;
   var starBtns = document.querySelectorAll('.star-val');
 
@@ -291,6 +305,10 @@
     }
   ];
 
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   function renderCard(r) {
     var stars = '';
     for (var i = 1; i <= 5; i++) stars += i <= r.stars ? '★' : '☆';
@@ -298,7 +316,7 @@
       '<div class="review-card-top">' +
         '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
         '<span class="review-stars" style="color:#FFD93D">' + stars + '</span>' +
-        '<span class="review-date">' + r.date + '</span>' +
+        '<span class="review-date">' + escHtml(r.date) + '</span>' +
       '</div>' +
       '<div class="review-text">' + escHtml(r.text) + '</div>' +
     '</div>';
@@ -306,13 +324,16 @@
 
   function loadReviews() {
     var list = document.getElementById('reviewsList');
-    var userReviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
-    var all = userReviews.slice().reverse().concat(pinnedReviews);
-    list.innerHTML = all.map(renderCard).join('');
-  }
-
-  function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    list.innerHTML = '<div style="text-align:center;padding:1rem;color:#4a6070">Loading reviews...</div>';
+    db.collection('reviews').orderBy('timestamp', 'desc').get().then(function(snapshot) {
+      var reviews = [];
+      snapshot.forEach(function(doc) { reviews.push(doc.data()); });
+      var all = reviews.concat(pinnedReviews);
+      list.innerHTML = all.length ? all.map(renderCard).join('') :
+        '<div class="no-reviews">No reviews yet — be the first! 🌟</div>';
+    }).catch(function() {
+      list.innerHTML = pinnedReviews.map(renderCard).join('');
+    });
   }
 
   document.getElementById('submitBtn').addEventListener('click', function() {
@@ -320,19 +341,33 @@
     var text = document.getElementById('reviewText').value.trim();
     if (!text) { alert('Please write something in your review!'); return; }
     if (selectedStars === 0) { alert('Please pick a star rating!'); return; }
-    var reviews = JSON.parse(localStorage.getItem('taiwan_reviews') || '[]');
     var now = new Date();
     var date = now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-    reviews.push({ name: name, stars: selectedStars, text: text, date: date });
-    localStorage.setItem('taiwan_reviews', JSON.stringify(reviews));
-    document.getElementById('reviewerName').value = '';
-    document.getElementById('reviewText').value = '';
-    selectedStars = 0;
-    updateStars(0);
-    loadReviews();
-    var toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(function() { toast.classList.remove('show'); }, 2500);
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    db.collection('reviews').add({
+      name: name,
+      stars: selectedStars,
+      text: text,
+      date: date,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function() {
+      document.getElementById('reviewerName').value = '';
+      document.getElementById('reviewText').value = '';
+      selectedStars = 0;
+      updateStars(0);
+      btn.disabled = false;
+      btn.textContent = 'Submit Review 🎉';
+      loadReviews();
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2500);
+    }).catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Submit Review 🎉';
+      alert('Couldn\'t save your review. Please try again!');
+    });
   });
 
   loadReviews();
