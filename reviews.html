@@ -117,24 +117,37 @@
   .field input:focus, .field textarea:focus { border-color: #5bc8f5; }
   .field textarea { resize: vertical; min-height: 90px; }
 
-  /* Star rating */
-  .stars {
-    display: flex;
-    gap: .4rem;
-    margin-top: .2rem;
-  }
-  .stars button {
-    background: none;
-    border: none;
-    font-size: 2rem;
+  /* Star rating slider */
+  .star-slider-wrap { display: flex; flex-direction: column; gap: .5rem; margin-top: .2rem; }
+  #starSlider {
+    width: 100%;
+    accent-color: #FFD93D;
     cursor: pointer;
-    line-height: 1;
-    transition: transform .1s;
-    padding: 0;
+    height: 6px;
   }
-  .stars button:hover, .stars button.active { transform: scale(1.2); }
-  .star-val { color: #ccc; }
-  .star-val.lit { color: #FFD93D; }
+  .star-slider-display { display: flex; align-items: center; gap: .75rem; }
+  #starValue {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #b07a20;
+    min-width: 2.5rem;
+  }
+  .partial-stars {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+  .partial-stars .bg { color: #ddd; }
+  .partial-stars .fg {
+    position: absolute;
+    top: 0; left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #FFD93D;
+  }
 
   .submit-btn {
     background: linear-gradient(135deg, #2A9D8F, #1a7a6e);
@@ -235,13 +248,13 @@
       <input type="text" id="reviewerName" placeholder="" maxlength="50">
     </div>
     <div class="field">
-      <label>Star rating</label>
-      <div class="stars" id="starRow" role="group" aria-label="Star rating">
-        <button type="button" class="star-val" data-val="1" aria-label="1 star">★</button>
-        <button type="button" class="star-val" data-val="2" aria-label="2 stars">★</button>
-        <button type="button" class="star-val" data-val="3" aria-label="3 stars">★</button>
-        <button type="button" class="star-val" data-val="4" aria-label="4 stars">★</button>
-        <button type="button" class="star-val" data-val="5" aria-label="5 stars">★</button>
+      <label for="starSlider">Star rating</label>
+      <div class="star-slider-wrap">
+        <input type="range" id="starSlider" min="1" max="5" step="0.1" value="3">
+        <div class="star-slider-display">
+          <span id="starValue">3.0</span>
+          <span id="starPreview"></span>
+        </div>
       </div>
     </div>
     <div class="field">
@@ -272,29 +285,27 @@
   firebase.initializeApp(firebaseConfig);
   var db = firebase.firestore();
 
-  var selectedStars = 0;
-  var starBtns = document.querySelectorAll('.star-val');
+  var selectedStars = 3.0;
 
-  function updateStars(val) {
-    starBtns.forEach(function(btn) {
-      var n = parseInt(btn.getAttribute('data-val'));
-      btn.classList.toggle('lit', n <= val);
-      btn.classList.toggle('active', n <= val);
-    });
+  function renderStars(rating) {
+    var pct = (parseFloat(rating) / 5 * 100).toFixed(2);
+    return '<span class="partial-stars">' +
+      '<span class="bg">★★★★★</span>' +
+      '<span class="fg" style="width:' + pct + '%">★★★★★</span>' +
+    '</span>';
   }
 
-  starBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      selectedStars = parseInt(btn.getAttribute('data-val'));
-      updateStars(selectedStars);
-    });
-    btn.addEventListener('mouseenter', function() {
-      updateStars(parseInt(btn.getAttribute('data-val')));
-    });
-  });
-  document.getElementById('starRow').addEventListener('mouseleave', function() {
-    updateStars(selectedStars);
-  });
+  var starSlider = document.getElementById('starSlider');
+  var starValueEl = document.getElementById('starValue');
+  var starPreview = document.getElementById('starPreview');
+
+  function syncSlider() {
+    selectedStars = parseFloat(starSlider.value);
+    starValueEl.textContent = selectedStars.toFixed(1);
+    starPreview.innerHTML = renderStars(selectedStars);
+  }
+  starSlider.addEventListener('input', syncSlider);
+  syncSlider();
 
   var pinnedReviews = [
     {
@@ -310,12 +321,11 @@
   }
 
   function renderCard(r) {
-    var stars = '';
-    for (var i = 1; i <= 5; i++) stars += i <= r.stars ? '★' : '☆';
+    var rating = parseFloat(r.stars).toFixed(1);
     return '<div class="review-card">' +
       '<div class="review-card-top">' +
         '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
-        '<span class="review-stars" style="color:#FFD93D">' + stars + '</span>' +
+        '<span class="review-stars">' + renderStars(r.stars) + ' <span style="font-size:.85rem;font-weight:700;color:#b07a20">' + rating + '</span></span>' +
         '<span class="review-date">' + escHtml(r.date) + '</span>' +
       '</div>' +
       '<div class="review-text">' + escHtml(r.text) + '</div>' +
@@ -340,7 +350,6 @@
     var name = document.getElementById('reviewerName').value.trim() || 'Anonymous';
     var text = document.getElementById('reviewText').value.trim();
     if (!text) { alert('Please write something in your review!'); return; }
-    if (selectedStars === 0) { alert('Please pick a star rating!'); return; }
     var now = new Date();
     var date = now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
     var btn = document.getElementById('submitBtn');
