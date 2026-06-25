@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Dark background circle -->
+  <circle cx="50" cy="50" r="50" fill="#4a4e54"/>
+  <!-- Robot head -->
+  <circle cx="50" cy="58" r="32" fill="#a8adb5"/>
+  <!-- Head highlight -->
+  <ellipse cx="42" cy="46" rx="11" ry="7" fill="#c8cdd5" opacity="0.55"/>
+  <!-- Antenna stem -->
+  <rect x="47" y="17" width="6" height="17" fill="#888e96" rx="3"/>
+  <!-- Antenna ball -->
+  <circle cx="50" cy="16" r="7" fill="#c8cdd5"/>
+  <circle cx="50" cy="16" r="5" fill="#dde0e6"/>
+  <!-- Eye sockets -->
+  <circle cx="36" cy="58" r="10" fill="#d4d8de"/>
+  <circle cx="64" cy="58" r="10" fill="#d4d8de"/>
+  <!-- Pupils -->
+  <circle cx="36" cy="58" r="6.5" fill="#393d42"/>
+  <circle cx="64" cy="58" r="6.5" fill="#393d42"/>
+  <!-- Eye highlights -->
+  <circle cx="33" cy="55" r="2.5" fill="#fff" opacity="0.85"/>
+  <circle cx="61" cy="55" r="2.5" fill="#fff" opacity="0.85"/>
+  <!-- Smile -->
+  <path d="M 37 76 Q 50 87 63 76" stroke="#393d42" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>

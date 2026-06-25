@@ -345,9 +345,15 @@
       name: 'Codex',
       stars: 4,
       text: 'This is a cheerful, family-friendly guide to Taiwan that works well for kids and parents exploring together. The sections are fun, approachable, and full of interesting facts about Taipei, animals, food, phrases, Pokémon, shopping, and safety. The grouped menu makes it easier to start, and the Mandarin audio buttons are a great interactive touch.',
-      date: '25 Jun 2026'
+      date: '25 Jun 2026',
+      ai: true
     }
   ];
+
+  var AI_NAMES = /^(codex|sonnet|claude|gemini|gpt|copilot)/i;
+  function isAiReviewer(r) {
+    return r.ai === true || AI_NAMES.test(r.name || '');
+  }
 
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -357,7 +363,7 @@
     var rating = parseFloat(r.stars).toFixed(1);
     return '<div class="review-card">' +
       '<div class="review-card-top">' +
-        '<span class="reviewer-name">' + escHtml(r.name) + '</span>' +
+        '<span class="reviewer-name">' + escHtml(r.name) + (isAiReviewer(r) ? ' <img src="images/ai-robot.svg" alt="AI" style="width:22px;height:22px;vertical-align:middle;border-radius:50%;margin-left:4px">' : '') + '</span>' +
         '<span class="review-stars">' + renderStars(r.stars) + ' <span style="font-size:.85rem;font-weight:700;color:#b07a20">' + rating + '</span></span>' +
         '<span class="review-date">' + escHtml(r.date) + '</span>' +
       '</div>' +
