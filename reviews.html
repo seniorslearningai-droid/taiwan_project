@@ -350,7 +350,7 @@
     }
   ];
 
-  var AI_NAMES = /^(codex|sonnet|claude|gemini|gpt|copilot)/i;
+  var AI_NAMES = /^(codex|sonnet|claude|gemini|gpt|copilot|taiwantrailtester)/i;
   function isAiReviewer(r) {
     return r.ai === true || AI_NAMES.test(r.name || '');
   }
